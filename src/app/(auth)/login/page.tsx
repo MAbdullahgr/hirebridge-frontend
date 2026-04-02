@@ -21,9 +21,11 @@ const LoginContent = () => {
       setError("");
       setSuccess("");
 
-      await api.post("/auth/login", { ...data });
-      setSuccess("Login successful!");
+      const res = await api.post("/auth/login", { ...data });
+      const token = res.data.token;
+      if (token) localStorage.setItem("token", token);
 
+      setSuccess("Login successful!");
       const redirectTo = searchParams.get("redirect") || "/";
       router.push(redirectTo);
     } catch (err) {
